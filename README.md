@@ -1,21 +1,21 @@
 # はじめに
-NavigationComponentのリリースにより、よりFragmentやFragmentDialogで結果を受け取る事が重要になってきました。
-更に合わせる様に、Acitivity Result APIがリリースされています。
-また、データの受け渡しはViewModelでも可能です。今回のサンプルではNavigation Componentを利用しているので、Navigation Component間でのViewModelを利用したデータの受け渡しを覚える必要があります。
-この記事ではActivity Result APIとViewModelで結果を受け取る方法について説明します。
+NavigationComponentのリリースにより、よりFragmentやFragmentDialogで結果を受け取る事が重要になってきました。<br>
+更に合わせる様に、Acitivity Result APIがリリースされています。<br>
+また、データの受け渡しはViewModelでも可能です。今回のサンプルではNavigation Componentを利用しているので、Navigation Component間でのViewModelを利用したデータの受け渡しを覚える必要があります。<br>
+この記事ではActivity Result APIとViewModelで結果を受け取る方法について説明します。<br>
 
 # 動作環境
 この記事の動作環境は以下のとおりです。
 
-Android Studio：4.1.2
-Kotln：1.4.31
-Open JDK:1.8
-compileSdkVersion：30
-targetSdkVersion：30
-minSdkVersion：23
-Navigation Component:2.3.2
-activity-ktx:1.2.2
-fragment-ktx:1.3.2
+* Android Studio：4.1.2
+* Kotln：1.4.31
+* Open JDK:1.8
+* compileSdkVersion：30
+* targetSdkVersion：30
+* minSdkVersion：23
+* Navigation Component:2.3.2
+* activity-ktx:1.2.2
+* fragment-ktx:1.3.2
 
 # 目標
 以下を目標とします。
@@ -42,7 +42,7 @@ dependencies {
 
 # Activity Result APIで結果を受け取る
 ## 実装イメージ
-基本的な実装方法としては **キー** を利用して、画面遷移から返ってきた際のコールバックを設定します。
+基本的な実装方法としては **キー** を利用して、画面遷移から返ってきた際のコールバックを設定します。<br>
 Activityの場合との違いとしては、Contractsなどは無いことです。
 
 ![01_activity_result_api.png](https://github.com/ktaro-nakaya/qiita-fragment-result-api/blob/main/images/Activity%20Result%20API%EF%BC%88Fragment%E7%B7%A8%EF%BC%89/01_activity_result_api.png)
@@ -79,9 +79,9 @@ setFragmentResultListener関数のシグネチャーは下記の通りです。
 |:---|:---|:---|:----------|
 |public final|  setFragmentResultListener| void | 第一引数：String requestKey<br> 第二引数：LifecycleOwner lifecycleOwner<br>第三引数：FragmentResultListener listener|
 
-第一引数で、どの **キー** で結果をセットされたときに動作するかを設定します。
-第二引数で、ライフサイクルオーナーを設定することにより、予期しないタイミングで動作することを防げます。
-第三引数で、実際の処理を記述します。
+第一引数で、どの **キー** で結果をセットされたときに動作するかを設定します。<br>
+第二引数で、ライフサイクルオーナーを設定することにより、予期しないタイミングで動作することを防げます。<br>
+第三引数で、実際の処理を記述します。<br>
 
 FragmentResultListenerは下記のメソッドを実装する必要があります。
 
@@ -89,30 +89,30 @@ FragmentResultListenerは下記のメソッドを実装する必要がありま�
 |:---|:---|:---|:----------|
 |public abstract|  onFragmentResult | void | 第一引数：String requestKey<br> 第二引数：Bundle result|
 
-第一引数には、結果が設定されたときの **キー** が格納されています。setFragmentResultListenerの第一引数と一致します。
-第二引数には、結果が設定されたときの受け渡したいデータを格納したBundle型のオブジェクトが格納されています。今回はラムダ式で実装しています。
+第一引数には、結果が設定されたときの **キー** が格納されています。setFragmentResultListenerの第一引数と一致します。<br>
+第二引数には、結果が設定されたときの受け渡したいデータを格納したBundle型のオブジェクトが格納されています。今回はラムダ式で実装しています。<br>
 
 #### 結果の設定
-実際に結果を返す処理の記述方法です。
-実際のコードは下記の通りです。
+実際に結果を返す処理の記述方法です。<br>
+実際のコードは下記の通りです。<br>
 
 ```kotlin
 // 結果を設定
 setFragmentResult(MY_RESULT_KEY, bundleOf("message" to "Fragment Result APIで結果を渡す"))
 ```
 
- **setFragmentResult** メソッドで結果を設定していきます。
+ **setFragmentResult** メソッドで結果を設定していきます。<br>
 シグネチャーは以下のとおりです。
 
 |修飾子|メソッド名|戻り値|引数|
 |:---|:---|:---|:----------|
 |public final |  setFragmentResult | void | 第一引数：String requestKey<br> 第二引数：Bundle result|
 
-第一引数は、動作させるコールバックと一致する **キー** を設定します。
-第二引数は、遷移元に返す値をBunle型で渡します。
+第一引数は、動作させるコールバックと一致する **キー** を設定します。<br>
+第二引数は、遷移元に返す値をBunle型で渡します。<br>
 
 ## DialogFragmentから結果を受け取る
-DialogFragmentもFragmentだから、同じ様に実装すれば動くでしょ！！と勘違いしやすくハマるポイントです。
+DialogFragmentもFragmentだから、同じ様に実装すれば動くでしょ！！と勘違いしやすくハマるポイントです。<br>
 実際に渡しもハマりました。
 
 ### 実装例
@@ -128,14 +128,14 @@ requireActivity().supportFragmentManager.setFragmentResultListener(MyDialogFragm
 }
 ```
 
-注意すべき点はFragmentではなく、supportFragmentManagerに設定しています。
-なぜ？とお思いになったでしょう。
-答えはダイアログを表示するところにヒントがあります。
+注意すべき点はFragmentではなく、supportFragmentManagerに設定しています。<br>
+なぜ？とお思いになったでしょう。<br>
+答えはダイアログを表示するところにヒントがあります。<br>
 
 ```kotlin:FirstFragment.kt
 MyDialogFragment().show(requireActivity().supportFragmentManager, null)
 ```
-ダイアログ表示するときって、NavigationComponentでもなく、普通に **supportFragmentManager** で表示しているんですね。
+ダイアログ表示するときって、NavigationComponentでもなく、普通に **supportFragmentManager** で表示しているんですね。<br>
 なので、コールバックの設定も **supportFragmentManager** に設定しなきゃです。
 
 #### 結果の設定
@@ -147,9 +147,9 @@ setFragmentResult(FRAGMENT_DIALOG_KEY, bundleOf("name" to "casareal"))
 
 
 # ViewModelでデータを共有
-ここまではActivity Result APIで実装する例を説明してきました。
-結局の所、データをFragment間で共有できればよいという考えだと、ViewModelを使っても良いわけですね。
-しかし、ViewModelだとライフサイクルが長いので、うっかりミスが発生しちゃいそうです。
+ここまではActivity Result APIで実装する例を説明してきました。<br>
+結局の所、データをFragment間で共有できればよいという考えだと、ViewModelを使っても良いわけですね。<br>
+しかし、ViewModelだとライフサイクルが長いので、うっかりミスが発生しちゃいそうです。<br>
 そこは、Androidで対応されているようなので、使ってみましょう。
 
 ## 実装イメージ
@@ -157,7 +157,7 @@ setFragmentResult(FRAGMENT_DIALOG_KEY, bundleOf("name" to "casareal"))
 ![02_viewmodel.png](https://github.com/ktaro-nakaya/qiita-fragment-result-api/blob/main/images/Activity%20Result%20API%EF%BC%88Fragment%E7%B7%A8%EF%BC%89/02_viewmodel.png)
 
 ## ViewModelの取得
-ViewModelを特定のFragment間のみで利用できるようにする方法の秘密はViewModelの取得方法にあります。
+ViewModelを特定のFragment間のみで利用できるようにする方法の秘密はViewModelの取得方法にあります。<br>
 実際のコードを確認してみます。
 
 ```kotlin:FirstFragment.kt
@@ -171,7 +171,7 @@ navGraphViewModels関数でViewModelを取得しています。
 そのため、引数にnavGraphIdを指定する必要があります。（/res/navigationのファイルのIDです。）
 
 ## データの受け渡しのコード例
-実際のデータの受け渡しのコードを確認してみましょう。
+実際のデータの受け渡しのコードを確認してみましょう。<br>
 ViewModelを取得する関数が変わるだけで、ViewModelの基本的な利用方法は変わりません。
 
 ### ViewModel
@@ -200,8 +200,8 @@ myViewModel.stateHandle.get<String>("message")?.let {
 ```
 
 # まとめ
-Navigation Componentがリリースされてから、Fragment間のデータの受け渡し方法がかなり簡潔になってきました。
-一昔前だったら煩雑な手順を踏んでましたが、コールバックで実装できるのは便利ですね。
+Navigation Componentがリリースされてから、Fragment間のデータの受け渡し方法がかなり簡潔になってきました。<br>
+一昔前だったら煩雑な手順を踏んでましたが、コールバックで実装できるのは便利ですね。<br>
 ぜひ活用していきたいものです。
 
 
